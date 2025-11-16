@@ -5,7 +5,7 @@ type AppShellProps = {
   children: ReactNode;
 };
 
-//quick comment add to test new commit
+
 export function AppShell({ children }: AppShellProps) {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50">
