@@ -1,63 +1,58 @@
-const mockEvents = [
-  {
-    id: 1,
-    title: "Sunday Long Ride",
-    date: "2025-04-13T08:00:00Z",
-    location: "Jackson Creek Loop",
-    type: "Training",
-  },
-  {
-    id: 2,
-    title: "Midweek Crit Practice",
-    date: "2025-04-16T18:00:00Z",
-    location: "Campus Circuit",
-    type: "Training",
-  },
-  {
-    id: 3,
-    title: "Spring Classic",
-    date: "2025-04-21T09:00:00Z",
-    location: "County Roads",
-    type: "Race",
-  },
-];
+import { prisma } from "@/lib/db";
+import { AppShell } from "@/components/layout/AppShell";
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  const events = await prisma.event.findMany({
+    orderBy: { startAt: "asc" },
+  });
+
   return (
-    <section className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">Events</h1>
-        <p className="text-sm text-slate-400">
-          Upcoming team rides, races, and events. Later this will hook into a
-          real calendar and allow RSVPs.
-        </p>
-      </header>
-
-      <div className="space-y-2">
-        {mockEvents.map((event) => (
-          <article
-            key={event.id}
-            className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 px-4 py-3 text-sm"
-          >
-            <div>
-              <p className="font-medium text-slate-100">{event.title}</p>
-              <p className="text-xs text-slate-400">
-                {new Date(event.date).toLocaleString()} • {event.location}
-              </p>
-            </div>
-            <span className="rounded-full border border-slate-700 px-2 py-0.5 text-xs text-slate-300">
-              {event.type}
-            </span>
-          </article>
-        ))}
-
-        {mockEvents.length === 0 && (
-          <p className="text-sm text-slate-400">
-            No upcoming events yet. Once events are added, they&apos;ll appear
-            here.
+      <div className="max-w-4xl mx-auto py-8">
+        <header className="mb-8">
+          <h1 className="text-3xl font-semibold">Team Events</h1>
+          <p className="text-sm text-muted-foreground">
+            Upcoming training sessions, races, and team activities.
           </p>
+        </header>
+
+        {events.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No upcoming events.</p>
+        ) : (
+          <ul className="space-y-4">
+            {events.map((event) => (
+              <li
+                key={event.id}
+                className="p-4 border rounded-lg flex flex-col gap-2"
+              >
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-medium">{event.name}</h2>
+
+                  <span className="text-xs px-2 py-1 border rounded-full uppercase tracking-wider">
+                    {event.type}
+                  </span>
+                </div>
+
+                {/* Dates */}
+                <p className="text-sm text-muted-foreground">
+                  {event.startAt.toLocaleString()}
+                  {event.endAt && ` → ${event.endAt.toLocaleString()}`}
+                </p>
+
+                {/* Location */}
+                {event.location && (
+                  <p className="text-sm text-muted-foreground">
+                    📍 {event.location}
+                  </p>
+                )}
+
+                {/* Description */}
+                {event.description && (
+                  <p className="text-sm mt-1">{event.description}</p>
+                )}
+              </li>
+            ))}
+          </ul>
         )}
       </div>
-    </section>
   );
 }
