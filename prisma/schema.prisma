@@ -9,59 +9,47 @@ datasource db {
 
 // ---------- Models ----------
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  role      UserRole @default(RIDER)
-  image     String?
+// model User {
+//   id        String   @id @default(cuid())
+//   email     String   @unique
+//   name      String?
+//   role      UserRole @default(RIDER)
+//   image     String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
 
-  rides     Ride[]
-  events    Event[]  @relation("EventCreator")
-}
+//   rides     Ride[]
+//   events    Event[]  @relation("EventCreator")
+// }
 
-model Ride {
-  id       String   @id @default(cuid())
-  user     User     @relation(fields: [userId], references: [id])
-  userId   String
+// model Ride {
+//   id       String   @id @default(cuid())
+//   user     User     @relation(fields: [userId], references: [id])
+//   userId   String
 
-  stravaActivityId String? @unique
-  name             String?
-  distanceM        Int?    // meters
-  movingTimeS      Int?    // seconds
-  elevationGainM   Int?    // meters
+//   stravaActivityId String? @unique
+//   name             String?
+//   distanceM        Int?    // meters
+//   movingTimeS      Int?    // seconds
+//   elevationGainM   Int?    // meters
 
-  startDate   DateTime?
-  mapPolyline String?     // encoded polyline for map page
+//   startDate   DateTime?
+//   mapPolyline String?     // encoded polyline for map page
 
-  createdAt   DateTime @default(now())
-}
+//   createdAt   DateTime @default(now())
+// }
 
 model Event {
   id            String    @id @default(cuid())
-  title         String
+  name          String
   description   String?
   startAt       DateTime
   endAt         DateTime?
-  locationName  String?
-  routePolyline String?   // planned route on map
+  location      String?
   type          EventType @default(TRAINING)
 
-  createdBy       User   @relation("EventCreator", fields: [createdByUserId], references: [id])
-  createdByUserId String
-
   createdAt       DateTime @default(now())
-}
-
-// ---------- Enums ----------
-
-enum UserRole {
-  RIDER
-  CAPTAIN
-  ADMIN
 }
 
 enum EventType {
@@ -70,3 +58,14 @@ enum EventType {
   SOCIAL
   OTHER
 }
+
+
+
+
+// ---------- Enums ----------
+
+// enum UserRole {
+//   RIDER
+//   CAPTAIN
+//   ADMIN
+// }
