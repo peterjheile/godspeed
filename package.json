@@ -15,11 +15,13 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.553.0",
     "next": "16.0.3",
     "prisma": "^6.19.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "react-leaflet": "^5.0.0",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {

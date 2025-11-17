@@ -31,6 +31,19 @@ model Member {
 
   avatarUrl String?
   bio       String?
+
+  rides     Ride[]
+}
+
+
+model Ride {
+  id          String   @id @default(cuid())
+  member      Member   @relation(fields: [memberId], references: [id])
+  memberId    String
+  startedAt   DateTime
+  endedAt     DateTime
+  distanceKm  Float?
+  polyline    String
 }
 
 
