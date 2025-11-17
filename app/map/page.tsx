@@ -1,26 +1,43 @@
-export default function MapPage() {
+
+import { RoutesMap, type Route } from "@/components/map/RoutesMap";
+import type { LatLngExpression } from "leaflet";
+
+export default async function MapPage() {
+  const routes: Route[] = [
+    {
+      id: "campus-loops",
+      label: "Campus Loops – Easy Ride",
+      positions: [
+        [39.1679, -86.523],
+        [39.1695, -86.518],
+        [39.171, -86.522],
+        [39.169, -86.526],
+        [39.1679, -86.523],
+      ] as LatLngExpression[],
+    },
+    {
+      id: "stadium-laps",
+      label: "Stadium Laps – Intervals",
+      positions: [
+        [39.1705, -86.526],
+        [39.1712, -86.523],
+        [39.17, -86.52],
+        [39.1688, -86.522],
+        [39.1705, -86.526],
+      ] as LatLngExpression[],
+    },
+  ];
+
   return (
-    <section className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">Map</h1>
-        <p className="text-sm text-slate-400">
-          An interactive view of team rides. Team members will be able to opt in
-          to share their Strava routes here.
+    <div className="max-w-5xl mx-auto py-10 space-y-6">
+      <header className="space-y-1">
+        <h1 className="text-4xl font-bold tracking-tight">Team Routes</h1>
+        <p className="text-sm text-muted-foreground">
+          Example routes around Bloomington. Later, these will come from real rides.
         </p>
       </header>
 
-      <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
-        <div className="mb-3 flex items-center justify-between text-sm">
-          <p className="text-slate-200">Team ride heatmap</p>
-          <p className="text-xs text-slate-500">
-            Map integration coming soon — routes will appear here.
-          </p>
-        </div>
-
-        <div className="flex h-72 items-center justify-center rounded-lg border border-dashed border-slate-700 bg-slate-950/60 text-xs text-slate-500">
-          Interactive map placeholder
-        </div>
-      </div>
-    </section>
+      <RoutesMap routes={routes} />
+    </div>
   );
 }
