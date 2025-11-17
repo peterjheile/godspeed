@@ -30,7 +30,7 @@ const EVENT_TYPE_LABELS: Record<EventType, string> = {
   OTHER: "Other",
 };
 
-// NOTE: params is a Promise in your Next.js version
+// In your setup, params is a Promise
 type PageProps = {
   params: Promise<{
     id: string;
@@ -73,8 +73,18 @@ async function updateEvent(id: string, formData: FormData) {
   redirect("/events");
 }
 
+async function deleteEvent(id: string) {
+  "use server";
+
+  await prisma.event.delete({
+    where: { id },
+  });
+
+  redirect("/events");
+}
+
 export default async function EditEventPage({ params }: PageProps) {
-  // 🔑 Unwrap params (it's a Promise)
+  // 🔑 Unwrap params (it's a Promise in your setup)
   const { id } = await params;
 
   if (!id) {
@@ -118,7 +128,7 @@ export default async function EditEventPage({ params }: PageProps) {
           </CardDescription>
         </CardHeader>
 
-        {/* Bind the server action to this specific event id */}
+        {/* Update form */}
         <form action={updateEvent.bind(null, id)}>
           <CardContent className="space-y-6">
             {/* Name */}
@@ -205,6 +215,19 @@ export default async function EditEventPage({ params }: PageProps) {
           </CardFooter>
         </form>
       </Card>
+
+      {/* Delete form - separate so forms are not nested */}
+      <form
+        action={deleteEvent.bind(null, id)}
+        className="flex justify-end"
+      >
+        <Button
+          type="submit"
+          variant="destructive"
+        >
+          Delete event
+        </Button>
+      </form>
     </div>
   );
 }
