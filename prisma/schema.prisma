@@ -20,10 +20,39 @@ model Event {
   createdAt       DateTime @default(now())
 }
 
+
+model Member {
+  id        String      @id @default(cuid())
+  name      String
+  email     String?     @unique
+  role      MemberRole  @default(RIDER)
+  joinedAt  DateTime    @default(now())
+
+
+  avatarUrl String?
+  bio       String?
+}
+
+
+
+
+
+
+// ---------- Enums ----------
 enum EventType {
   TRAINING
   RACE
   SOCIAL
+  OTHER
+}
+
+
+enum MemberRole {
+  RIDER
+  COACH
+  MECHANIC
+  MANAGER
+  ALUMNI
   OTHER
 }
 
