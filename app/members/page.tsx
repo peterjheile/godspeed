@@ -1,5 +1,13 @@
 import { prisma } from "@/lib/db";
 
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export default async function TeamPage() {
   const members = await prisma.member.findMany({
@@ -7,41 +15,38 @@ export default async function TeamPage() {
   });
 
   return (
-      <div className="max-w-4xl mx-auto py-8">
-        <header className="mb-8">
-          <h1 className="text-3xl font-semibold">Team</h1>
-          <p className="text-sm text-muted-foreground">
+      <div className="max-w-5xl mx-auto py-10 space-y-8">
+        <div>
+          <h1 className="text-4xl font-bold tracking-tight">Team Members</h1>
+          <p className="text-muted-foreground mt-1">
             Riders, coaches, mechanics, and alumni of Godspeed.
           </p>
-        </header>
+        </div>
 
-        {members.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No team members found.
-          </p>
-        ) : (
-          <ul className="space-y-4">
-            {members.map((member) => (
-              <li
-                key={member.id}
-                className="flex items-start justify-between gap-4 border rounded-lg p-4"
-              >
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {members.map((member) => (
+            <Card key={member.id}>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <div>
-                  <h2 className="text-lg font-medium">{member.name}</h2>
+                  <CardTitle>{member.name}</CardTitle>
                   {member.email && (
-                    <p className="text-xs text-muted-foreground">
-                      {member.email}
-                    </p>
+                    <CardDescription>{member.email}</CardDescription>
                   )}
                 </div>
 
-                <span className="text-xs px-2 py-1 rounded-full border uppercase tracking-wide">
+                <Badge variant="outline" className="uppercase">
                   {member.role}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
+                </Badge>
+              </CardHeader>
+
+              {member.bio && (
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">{member.bio}</p>
+                </CardContent>
+              )}
+            </Card>
+          ))}
+        </div>
       </div>
   );
 }

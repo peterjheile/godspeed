@@ -1,72 +1,82 @@
 import { prisma } from "@/lib/db";
 
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+
 export default async function DashboardPage() {
-  // Fetch data in parallel for performance
   const [eventCount, memberCount, nextEvent, recentMembers] = await Promise.all([
     prisma.event.count(),
-
     prisma.member.count(),
-
     prisma.event.findFirst({
       where: { startAt: { gt: new Date() } },
       orderBy: { startAt: "asc" },
     }),
-
     prisma.member.findMany({
       orderBy: { joinedAt: "desc" },
-      take: 5, // show 5 most recent members
+      take: 5,
     }),
   ]);
 
-  console.log(nextEvent, "hello");
-
   return (
-      <div className="max-w-4xl mx-auto py-8 space-y-10">
-        <h1 className="text-3xl font-semibold">Dashboard</h1>
+      <div className="max-w-5xl mx-auto py-10 space-y-10">
+        <h1 className="text-4xl font-bold tracking-tight">Dashboard</h1>
 
-        {/* Summary cards */}
+        {/* Summary Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <Card label="Events" value={eventCount} />
-          <Card label="Team Members" value={memberCount} />
-          <Card
+          <StatCard label="Total Events" value={eventCount} />
+          <StatCard label="Team Members" value={memberCount} />
+          <StatCard
             label="Next Event"
-            value={nextEvent ? nextEvent.name : "None scheduled"}
+            value={nextEvent ? nextEvent.name : "No upcoming events"}
           />
         </div>
 
-        {/* Recent members */}
-        <section>
-          <h2 className="text-xl font-medium mb-4">Recent Members</h2>
-
-          <ul className="space-y-3">
-            {recentMembers.map((member) => (
-              <li
-                key={member.id}
-                className="border p-3 rounded-lg flex justify-between items-center"
-              >
-                <span className="font-medium">{member.name}</span>
-                <span className="text-xs text-muted-foreground">
-                  {member.joinedAt.toLocaleDateString()}
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          {recentMembers.length === 0 && (
-            <p className="text-sm text-muted-foreground">
-              No members found. Seed some in your database.
-            </p>
-          )}
-        </section>
+        {/* Recent Members */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Members</CardTitle>
+            <CardDescription>
+              Members who joined the team most recently.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {recentMembers.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No members found. Add some to the database.
+              </p>
+            ) : (
+              <ul className="space-y-4">
+                {recentMembers.map((member) => (
+                  <li
+                    key={member.id}
+                    className="flex items-center justify-between border rounded-md p-3"
+                  >
+                    <span className="font-medium">{member.name}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {member.joinedAt.toLocaleDateString()}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
       </div>
   );
 }
 
-function Card({ label, value }: { label: string; value: any }) {
+function StatCard({ label, value }: { label: string; value: any }) {
   return (
-    <div className="border rounded-lg p-4">
-      <p className="text-sm text-muted-foreground">{label}</p>
-      <p className="text-2xl font-semibold mt-2">{value}</p>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardDescription>{label}</CardDescription>
+        <CardTitle className="text-3xl">{value}</CardTitle>
+      </CardHeader>
+    </Card>
   );
 }
