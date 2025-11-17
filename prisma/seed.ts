@@ -9,8 +9,8 @@ async function main() {
       {
         name: "Team Ride — Campus Loops",
         description: "Easy-paced group ride around campus and surrounding roads.",
-        startAt: new Date("2025-03-15T10:00:00-05:00"),
-        endAt: new Date("2025-03-15T12:00:00-05:00"),
+        startAt: new Date("2026-03-15T10:00:00-05:00"),
+        endAt: new Date("2026-03-15T12:00:00-05:00"),
         location: "IU Campus",
         type: EventType.TRAINING,
       },
