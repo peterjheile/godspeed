@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/db";
-import { AppShell } from "@/components/layout/AppShell";
 
 export default async function EventsPage() {
   const events = await prisma.event.findMany({
     orderBy: { startAt: "asc" },
   });
+  console.log(events)
 
   return (
       <div className="max-w-4xl mx-auto py-8">
