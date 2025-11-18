@@ -10,6 +10,8 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+import { requireAdmin } from "@/lib/auth";
+
 const EVENT_TYPE_LABELS: Record<EventType, string> = {
   TRAINING: "Training",
   RACE: "Race",
@@ -19,6 +21,7 @@ const EVENT_TYPE_LABELS: Record<EventType, string> = {
 
 async function createEvent(formData: FormData) {
   "use server";
+  await requireAdmin();
 
   const name = (formData.get("name") ?? "").toString().trim();
   const description = (formData.get("description") ?? "").toString().trim() || null;
@@ -50,7 +53,9 @@ async function createEvent(formData: FormData) {
   redirect("/events");
 }
 
-export default function NewEventPage() {
+export default async function NewEventPage() {
+  await requireAdmin();
+
   const defaultStart = new Date();
   // Round to the nearest 30 minutes for nicer default
   defaultStart.setMinutes(defaultStart.getMinutes() - (defaultStart.getMinutes() % 30), 0, 0);

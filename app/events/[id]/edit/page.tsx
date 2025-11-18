@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
+import { requireAdmin } from "@/lib/auth";
+
 const EVENT_TYPE_LABELS: Record<EventType, string> = {
   TRAINING: "Training",
   RACE: "Race",
@@ -39,6 +41,7 @@ type PageProps = {
 
 async function updateEvent(id: string, formData: FormData) {
   "use server";
+  await requireAdmin();
 
   const name = (formData.get("name") ?? "").toString().trim();
   const description =
@@ -75,6 +78,7 @@ async function updateEvent(id: string, formData: FormData) {
 
 async function deleteEvent(id: string) {
   "use server";
+  await requireAdmin();
 
   await prisma.event.delete({
     where: { id },
@@ -84,6 +88,8 @@ async function deleteEvent(id: string) {
 }
 
 export default async function EditEventPage({ params }: PageProps) {
+  await requireAdmin();
+
   // 🔑 Unwrap params (it's a Promise in your setup)
   const { id } = await params;
 
