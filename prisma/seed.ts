@@ -146,6 +146,31 @@ async function main() {
   });
 
 
+  await prisma.user.upsert({
+  where: { email: "admin1@godspeed.dev" },
+  update: {
+    role: "ADMIN",
+  },
+  create: {
+    email: "admin1@godspeed.dev",
+    name: "Godspeed Admin 1",
+    role: "ADMIN",
+  },
+  })
+
+  await prisma.user.upsert({
+    where: { email: "admin2@godspeed.dev" },
+    update: {
+      role: "ADMIN",
+    },
+    create: {
+      email: "admin2@godspeed.dev",
+      name: "Godspeed Admin 2",
+      role: "ADMIN",
+    },
+  })
+
+
 }
 
 main()
