@@ -33,6 +33,7 @@ model Member {
   bio       String?
 
   rides     Ride[]
+  raceresults RaceResult[]
 }
 
 
@@ -44,6 +45,44 @@ model Ride {
   endedAt     DateTime
   distanceKm  Float?
   polyline    String
+}
+
+model Race {
+  id          String        @id @default(cuid())
+  name        String        // Display name, e.g. "Little 500", "Godspeed Fundraiser"
+  type        RaceType
+  seasonLabel String        // e.g. "Spring 2025", "Fall 2024"
+  date        DateTime?
+  location    String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  results     RaceResult[]
+}
+
+model RaceResult {
+  id          String    @id @default(cuid())
+  race        Race      @relation(fields: [raceId], references: [id])
+  raceId      String
+
+  member      Member?   @relation(fields: [memberId], references: [id])
+  memberId    String?
+
+  riderName   String?   // For non-member or manual override
+  teamName    String?   // Team name for team events
+  category    String?   // e.g. "Men's A", "Women", "Alumni"
+  place       Int?      // 1, 2, 3, ...
+  time        String?   // Flexible: "2:13:45", "35 laps", "N/A"
+  notes       String?
+  createdAt   DateTime  @default(now())
+}
+
+model RaceDefinition {
+  id          String   @id @default(cuid())
+  name        String
+  type        RaceType
+  isRecurring Boolean  @default(true)
+  createdAt   DateTime @default(now())
 }
 
 
@@ -64,6 +103,15 @@ enum MemberRole {
   MECHANIC
   MANAGER
   ALUMNI
+  OTHER
+}
+
+
+enum RaceType {
+  LITTLE_500
+  MISS_N_OUT
+  TEAM_PURSUIT
+  INDIVIDUAL_TT
   OTHER
 }
 

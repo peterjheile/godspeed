@@ -1,20 +1,63 @@
-export default function ResultsPage() {
-  return (
-    <section className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">Little 500 Results</h1>
-        <p className="text-sm text-slate-400">
-          Historical race results for the Godspeed team in the IU Little 500.
-          This will eventually show placements, lap counts, riders, and year-over-year stats.
-        </p>
-      </header>
+import { prisma } from "@/lib/db";
+import ResultsExplorer from "@/components/results/ResultsExplorer";
+import { RaceType } from "@prisma/client";
 
-      <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
-        <p className="text-sm text-slate-300">
-          Results data will be added soon. This page will highlight past team
-          performances and notable achievements in the Little 500.
-        </p>
-      </div>
-    </section>
+type ResultEntry = {
+  id: string;
+  riderName: string | null;
+  memberName: string | null;
+  teamName: string | null;
+  category: string | null;
+  place: number | null;
+  time: string | null;
+  notes: string | null;
+};
+
+type RaceForClient = {
+  id: string;
+  name: string;
+  type: RaceType;
+  seasonLabel: string;
+  date: string | null;
+  location: string | null;
+  results: ResultEntry[];
+};
+
+export default async function ResultsPage() {
+  const racesDb = await prisma.race.findMany({
+    include: {
+      results: {
+        include: { member: true },
+        orderBy: { place: "asc" },
+      },
+    },
+    orderBy: {
+      date: "desc",
+    },
+  });
+
+  const races: RaceForClient[] = racesDb.map((race) => ({
+    id: race.id,
+    name: race.name,
+    type: race.type,
+    seasonLabel: race.seasonLabel,
+    date: race.date ? race.date.toISOString() : null,
+    location: race.location,
+    results: race.results.map((res) => ({
+      id: res.id,
+      riderName: res.riderName,
+      memberName: res.member ? res.member.name : null,
+      teamName: res.teamName,
+      category: res.category,
+      place: res.place,
+      time: res.time,
+      notes: res.notes,
+    })),
+  }));
+
+  return (
+    <div className="space-y-4">
+      <ResultsExplorer races={races} />
+    </div>
   );
 }
