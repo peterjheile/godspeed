@@ -6,18 +6,40 @@ export async function getSession() {
   return getServerSession(authOptions)
 }
 
-export async function isAdmin() {
+export async function getCurrentUserRole() {
   const session = await getServerSession(authOptions)
-  return !!session && (session.user as any).role === "ADMIN"
+  const role = (session?.user as any)?.role as "USER" | "ADMIN" | "SUPERADMIN" | undefined
+  return role
 }
 
-export async function requireAdmin() {
-  const session = await getServerSession(authOptions)
+export async function isAdmin() {
+  const role = await getCurrentUserRole()
+  return role === "ADMIN" || role === "SUPERADMIN"
+}
 
-  if (!session || (session.user as any).role !== "ADMIN") {
-    // Redirect to admin login if not authorized
+export async function isSuperAdmin() {
+  const role = await getCurrentUserRole()
+  return role === "SUPERADMIN"
+}
+
+// For routes / pages where normal admins AND superadmins are allowed
+export async function requireAdmin() {
+  const role = await getCurrentUserRole()
+
+  if (role !== "ADMIN" && role !== "SUPERADMIN") {
     redirect("/admin/login?error=unauthorized")
   }
 
-  return session
+  return role
+}
+
+// For routes / pages where ONLY superadmins are allowed
+export async function requireSuperAdmin() {
+  const role = await getCurrentUserRole()
+
+  if (role !== "SUPERADMIN") {
+    redirect("/admin/login?error=forbidden")
+  }
+
+  return role
 }

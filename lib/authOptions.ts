@@ -25,20 +25,15 @@ export const authOptions: NextAuthOptions = {
         if (!email || !password) return null
 
         // Look up the user
-        const user = await prisma.user.findUnique({
-          where: { email },
-        })
+        const user = await prisma.user.findUnique({ where: { email } })
 
         if (!user) return null
-        if (user.role !== "ADMIN") return null
+        if (user.role === "USER") return null // only ADMIN or SUPERADMIN may log in with this form
 
-        // Must have a passwordHash
         if (!user.passwordHash) return null
 
-        // Compare password using bcrypt
         const bcrypt = require("bcryptjs")
         const isValid = await bcrypt.compare(password, user.passwordHash)
-
         if (!isValid) return null
 
         return user

@@ -2,19 +2,46 @@
 
 import { prisma } from "@/lib/db"
 import bcrypt from "bcryptjs"
-import { requireAdmin } from "@/lib/auth"
+import { requireSuperAdmin } from "@/lib/auth"
 import { redirect } from "next/navigation"
 
-export async function createAdminAction(formData: FormData) {
-  // Ensure only admins can create admins
-  await requireAdmin()
+function isStrongPassword(pw: string) {
+  // at least 10 chars, 1 letter, 1 number, 1 symbol
+  const longEnough = pw.length >= 10
+  const hasLetter = /[A-Za-z]/.test(pw)
+  const hasNumber = /[0-9]/.test(pw)
+  const hasSymbol = /[^A-Za-z0-9]/.test(pw)
+  return longEnough && hasLetter && hasNumber && hasSymbol
+}
 
-  const email = formData.get("email")?.toString()
-  const name = formData.get("name")?.toString()
-  const password = formData.get("password")?.toString()
+export type CreateAdminState = {
+  error?: string
+}
+
+export async function createAdminAction(
+  prevState: CreateAdminState,
+  formData: FormData
+): Promise<CreateAdminState> {
+  await requireSuperAdmin()
+
+  const email = formData.get("email")?.toString().trim()
+  const name = formData.get("name")?.toString().trim()
+  const password = formData.get("password")?.toString() ?? ""
 
   if (!email || !password) {
-    throw new Error("Missing email or password")
+    return { error: "Email and password are required." }
+  }
+
+  if (!isStrongPassword(password)) {
+    return {
+      error:
+        "Password must be at least 10 characters and include a letter, a number, and a symbol.",
+    }
+  }
+
+  const existing = await prisma.user.findUnique({ where: { email } })
+  if (existing) {
+    return { error: "A user with that email already exists." }
   }
 
   const passwordHash = await bcrypt.hash(password, 10)
@@ -22,11 +49,12 @@ export async function createAdminAction(formData: FormData) {
   await prisma.user.create({
     data: {
       email,
-      name,
+      name: name || null,
       passwordHash,
-      role: "ADMIN",
+      role: "ADMIN", // still default to ADMIN; SUPERADMIN is via promotions
     },
   })
 
-  redirect("/admin/users") // later we can build this page
+  // On success, just go back to the users list
+  redirect("/admin/users")
 }

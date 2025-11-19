@@ -7,6 +7,7 @@ async function main() {
   await prisma.event.deleteMany();
   await prisma.ride.deleteMany()
   await prisma.member.deleteMany();
+  await prisma.user.deleteMany();
 
 
   await prisma.event.createMany({
@@ -154,30 +155,30 @@ async function main() {
   await prisma.user.upsert({
     where: { email: "admin1@godspeed.dev" },
     update: {
-      role: "ADMIN",
+      role: "SUPERADMIN",
       passwordHash: adminPasswordHash,
     },
     create: {
       email: "admin1@godspeed.dev",
-      name: "Godspeed Admin 1",
-      role: "ADMIN",
+      name: "Godspeed Superadmin",
+      role: "SUPERADMIN",
       passwordHash: adminPasswordHash,
     },
   })
 
   await prisma.user.upsert({
-    where: { email: "admin2@godspeed.dev" },
-    update: {
-      role: "ADMIN",
-      passwordHash: adminPasswordHash,
-    },
-    create: {
-      email: "admin2@godspeed.dev",
-      name: "Godspeed Admin 2",
-      role: "ADMIN",
-      passwordHash: adminPasswordHash,
-    },
-  })
+  where: { email: "admin2@godspeed.dev" },
+  update: {
+    role: "ADMIN",
+    passwordHash: adminPasswordHash,
+  },
+  create: {
+    email: "admin2@godspeed.dev",
+    name: "Godspeed Admin 2",
+    role: "ADMIN",
+    passwordHash: adminPasswordHash,
+  },
+})
 
 
 }

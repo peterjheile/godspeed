@@ -19,6 +19,9 @@ model User {
   role          UserRole  @default(USER)
   passwordHash  String?   // <- NEW: hashed password, nullable for OAuth-only users
 
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
   accounts      Account[]
   sessions      Session[]
 }
