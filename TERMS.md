@@ -19,7 +19,7 @@ Features include:
 
 ## 2. Eligibility
 
-You may use the App if:
+You may use the App if:    
 
 - You are a rider, coach, staff member, or guest viewer associated with the team  
 - You agree to follow these Terms and applicable team guidelines
