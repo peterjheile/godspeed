@@ -1,108 +1,111 @@
 # Privacy Policy — Godspeed Cycling Team Portal
-_Last updated: 11/19/2025_
+_Last updated: 10/19/2025_
 
-Godspeed Cycling (“we”, “our”, or “the App”) provides a team-oriented cycling platform that allows riders to connect their Strava accounts and share training activity data with coaches and staff. This Privacy Policy describes what information we collect, how we use it, and your choices.
+This website was created to share updates, activity, and general information about the Godspeed Cycling Team. Some parts of the site allow team members to connect their Strava accounts so their rides can be displayed on public team pages. This policy explains what information we collect and how it is used.
 
 ---
 
-## 1. Information We Collect
+## 1. What Information We Collect
 
-### 1.1 Strava Data (when you connect your account)
-If you choose to connect your Strava account, we may access certain data through the Strava API, including:
+### 1.1 Strava Data (only if you connect your account)
+If you choose to link your Strava account, we receive the following through Strava’s API:
 
-- Strava Athlete ID  
-- Activities: ride name, description, date, distance, elevation, speed, moving time  
-- GPS route polylines (with Strava privacy zones already applied by Strava)  
-- Access and refresh tokens used to sync new activities
+- Your Strava Athlete ID  
+- Your rides (date, distance, duration, elevation, activity names)  
+- The GPS route polyline Strava provides (already includes Strava privacy zones)  
+- Your Strava access + refresh tokens to keep your rides synced
 
-We do **not** collect your Strava password and we do **not** write to Strava on your behalf.
+We **never** receive your Strava password, and we don’t write or post anything to your Strava account.
 
-### 1.2 Information You Provide
-We may also store:
+### 1.2 Basic Member Information
+For team roster purposes, we may store:
 
 - Your name  
 - Email address (optional)  
+- Bio or profile text (optional)  
 - Avatar URL (optional)  
-- Bio (optional)  
-- Team role (rider, coach, staff, etc.)
+- Your team role (rider, coach, alumni, etc.)
 
-### 1.3 Basic Technical Information
-We may collect basic server logs or metadata required to secure and maintain the App. We do not use advertising trackers.
-
----
-
-## 2. How We Use Your Information
-
-We use your information exclusively to support the Godspeed Cycling Team, including:
-
-- Displaying your activities to coaches and staff  
-- Visualizing team routes and training volume  
-- Generating statistics and maps  
-- Showing public or team-visible rider profiles **only for riders who connect Strava**
-
-We do **not**:
-
-- Sell data  
-- Share data outside the team context  
-- Use data for advertising  
-- Train machine-learning models
+### 1.3 Automatically Collected Technical Info
+Standard server logs (IP address, browser info) may be collected to keep the site secure and functioning.  
+We do **not** use advertising trackers.
 
 ---
 
-## 3. Data Storage & Security
+## 2. How We Use (and Display) Your Information
 
-- Data is stored in a private, access-controlled database.  
-- Strava tokens are stored server-side and never exposed to your browser.  
-- Only authorized personnel may access the internal systems.  
-- While we implement reasonable measures to protect your data, no system is fully immune to security risks.
+The purpose of this site is to:
+
+- Introduce the Godspeed Cycling Team to the general public  
+- Let visitors see team activity, progress, and rides  
+- Give team members a place to showcase their cycling  
+- Display maps and simple statistics about rides
+
+If you connect Strava, your ride data may appear on:
+
+- Your public rider profile  
+- The public team map  
+- The team rides feed  
+- Other public team overview pages
+
+Nothing is ever shown unless **you** authorize it by connecting Strava.
+
+We do **not** use your information for ads, data selling, or automated analysis.
+
+---
+
+## 3. How Your Data Is Stored
+
+- All data lives in a private, access-controlled database.  
+- Strava tokens are stored server-side and are **never** visible to other users.  
+- Only admins for the Godspeed Cycling Team can access the internal dashboard.
 
 ---
 
 ## 4. Disconnecting Strava
 
-You can disconnect the App at any time by:
+You can disconnect at any time by:
 
-1. Visiting Strava → Settings → My Apps → Revoke Access  
-2. Using your personalized “Manage Strava” link provided when you connected  
-3. Asking a coach or staff member to disconnect on your behalf
+- Going to Strava → Settings → My Apps → Revoke Access  
+- Using the personal link you received when you connected  
+- Asking a team admin/coach to disconnect you
 
-Once disconnected, the App will stop syncing new activities immediately.
+Once disconnected, the site will immediately stop syncing new rides.
 
 ---
 
 ## 5. Deleting Your Data
 
-You may request deletion of all imported Strava data at any time:
+If you want all your Strava data removed from this website, just ask. You can request deletion:
 
-- Through your “Manage Strava” page  
-- By asking a coach/staff member  
-- By emailing **peterjheile@gmail.com**
+- Through your personal “Manage Strava” page  
+- Through a coach/admin  
+- Or by emailing **peterjheile@gmail.com**
 
-When a deletion request is made, we will remove:
+We will delete:
 
-- All imported activities  
-- Strava tokens  
-- Your Strava athlete ID  
-- Strava connection timestamps
+- All synced activities  
+- Your Strava access/refresh tokens  
+- Your Strava Athlete ID  
+- Your connection timestamps
 
-We aim to complete deletions within **30 days**.
-
----
-
-## 6. Public Visibility
-
-Only riders who explicitly connect Strava may have their activities displayed on public or team-visible pages.  
-No data is shown for athletes who do not connect.
+We aim to complete deletions within **10 days**.
 
 ---
 
-## 7. Changes to This Policy
+## 6. Public Visibility and Consent
 
-We may update this Privacy Policy from time to time. When we do, the “Last updated” date will be updated above.
+It’s important to be clear:
+
+- **Anyone can visit the site** to learn about the team.  
+- **Only members who connect Strava** will have ride data displayed publicly or stored.  
+- Riders who do not connect Strava will not have activity shown at all.
+
+You are always in control of your visibility.
 
 ---
 
-## 8. Contact
+## 7. Contact
 
-For any questions or concerns about this policy, contact:  
+For privacy questions or requests, email:  
 **peterjheile@gmail.com**
