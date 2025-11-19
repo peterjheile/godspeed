@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { syncAllStravaRidesForMember } from "@/lib/strava-client";
 import { prisma } from "@/lib/db";
+import crypto from "crypto";
 
 type PageProps = {
   searchParams: Promise <{ memberId?: string }>
@@ -33,6 +34,10 @@ export default async function StravaConnectedPage({ searchParams }: PageProps) {
     return <div>No Strava account found. Something went wrong with OAuth.</div>;
   }
 
+
+  const disconnectToken = crypto.randomBytes(32).toString("hex");
+  const disconnectUrl = `${process.env.NEXT_PUBLIC_BASE_URL}strava/manage?token=${disconnectToken}`;
+
   // 3️⃣ Copy Strava tokens + athlete ID onto the Member
   const updatedMember = await prisma.member.update({
     where: { id: member.id },
@@ -46,6 +51,7 @@ export default async function StravaConnectedPage({ searchParams }: PageProps) {
       stravaConnectedAt: new Date(),
       stravaInviteToken: null,
       stravaInviteExpiresAt: null,
+      stravaDisconnectToken: disconnectToken,
     },
   });
 
@@ -71,6 +77,10 @@ export default async function StravaConnectedPage({ searchParams }: PageProps) {
             <p className="text-xs">
               (Internal note: linked for member ID{" "}
               <span className="font-mono text-foreground">{memberId}</span>)
+              <span className="font-mono text-foreground">
+                Save or bookmark this link if you ever want to disconnect or delete
+                your strava data: {disconnectUrl}
+                </span>
             </p>
           )}
         </CardContent>
