@@ -16,13 +16,47 @@ export async function disconnectMemberStravaById(memberId: string) {
   });
 }
 
+
+async function deauthorizeStravaOnStravaSide(accessToken: string | null) {
+  if (!accessToken) return;
+
+  try {
+    await fetch("https://www.strava.com/oauth/deauthorize", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (err) {
+    console.error("Failed to deauthorize Strava on Strava side:", err);
+    // Not fatal — we still proceed with local cleanup
+  }
+}
+
+
+
+
+
+
 export async function deleteMemberStravaDataById(memberId: string) {
-  // Delete rides for this rider
+  // First, get the member so we can retrieve their access token
+  const member = await prisma.member.findUnique({
+    where: { id: memberId },
+    select: { stravaAccessToken: true },
+  });
+
+  // If they have an active access token, revoke on Strava's side
+  if (member?.stravaAccessToken) {
+    await deauthorizeStravaOnStravaSide(member.stravaAccessToken);
+  }
+
+  // Delete local Strava data (rides)
   await prisma.ride.deleteMany({
     where: { memberId },
   });
 
-  // Also disconnect Strava and clear token (now that data is gone)
+  // Clear all Strava-related fields
   await prisma.member.update({
     where: { id: memberId },
     data: {
